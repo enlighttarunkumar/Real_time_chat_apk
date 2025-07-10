@@ -4,9 +4,13 @@ import useChatContext from "../context/ChatContext";
 import { useNavigate } from 'react-router';
 import SockJS from 'sockjs-client';
 import { baseURL } from '../config/AxiosHelper';
+import { Stomp } from '@stomp/stompjs';
+import toast from 'react-hot-toast';
+import { getMessages } from '../service/RoomService';
+import { timeAgo } from '../config/timeago';
 const ChatPage = () => {
     const navigate= useNavigate(); 
-    const{roomId, currentUser, connected,} = useChatContext();
+    const{roomId, currentUser, connected,setConnected,setRoomId,setCurrentUser} = useChatContext();
     useEffect(
     
     () =>{
@@ -15,34 +19,38 @@ const ChatPage = () => {
         }
     },[connected,roomId,currentUser]
     );
-    console.log(currentUser);
-    const[messages, setMessages] = useState([
-    {
-        content : "Hello",
-        sender : "Ben",
-    },
-    {
-        content : "Hello",
-        sender : "ankit",
-    },
-    {
-        content : "Hello",
-        sender : "arun",
-    },
-    {
-        content : "Hello",
-        sender : "Ben",
-    },
-
-
-]);
+    const[messages, setMessages] = useState([]);
 const[input,setInput] = useState("");
 const inputref=useRef(null);
 const chatBoxRef = useRef(null);
 const[stompClient,setStompClient] = useState(null);
 
-// stomp client ko start karo
 
+useEffect(()=>{
+    async function loadMessages() {
+        try{
+            const messages =await getMessages(roomId)
+            setMessages(messages);
+            
+        }
+        catch(error){
+        console.log("dsdas");
+
+        }
+
+
+    }
+if(connected){
+    loadMessages();
+}
+},[]
+
+);
+
+
+
+
+// stomp client ko start karo
  useEffect(() => {
     const connectWebSocket = () => {
       ///SockJS
@@ -73,19 +81,61 @@ const[stompClient,setStompClient] = useState(null);
     //stomp client
   }, [roomId]);
 
+// Message handling 
 
+const sendMessage = async () => {
+    if (stompClient && connected && input.trim()) {
+      console.log(input);
+
+      const message = {
+        sender: currentUser,
+        content: input,
+        roomId: roomId,
+      };
+
+      stompClient.send(
+        `/app/sendMessage/${roomId}`,
+        {},
+        JSON.stringify(message)
+      );
+      setInput("");
+    }
+
+    //
+  };
+  // scroll down
+  useEffect(
+    ()=>{
+        if(chatBoxRef.current){
+            chatBoxRef.current.scroll({
+                top:chatBoxRef.current.scrollHeight,
+                behavior:"smooth",
+            });
+        }
+    },[messages]
+  )
+
+  // Handling logout
+
+  function handleLogOut(){
+    stompClient.disconnect();
+    setConnected(false);
+    setRoomId('');
+    setCurrentUser('');
+    navigate("/");
+  }
   return (
     <div className="">
         <header className = "dark:border-gray-700 py-5 flex justify-around items-center dark:bg-gray-700 fixed w-full">
             <div>
-                <h1 className="text-xl font-semibold">Room : <span>Family Room</span></h1>
+                <h1 className="text-xl font-semibold">Room : <span>{roomId}</span></h1>
             </div>
             <div>
-                <h1 className="text-xl font-semibold">User : <span>Ben Ten</span></h1>
+                <h1 className="text-xl font-semibold">User : <span>{currentUser}</span></h1>
 
             </div>
             <div>
-                <button className="dark:bg-red-500 dark:hover:bg-red-700 px-3 py-2 rounded-lg">Leave Room</button>
+                <button onClick={handleLogOut}className="dark:bg-red-500 dark:hover:bg-red-700 px-3 py-2 rounded-lg">Leave Room</button>
             </div>
         </header>
       
@@ -101,11 +151,15 @@ const[stompClient,setStompClient] = useState(null);
                     <div key= {index} className={`flex ${messages.sender== currentUser ? "justify-end":"justify-start"}`}>
                         <div className={`my-2 ${messages.sender == currentUser ? "bg-green-700":"bg-gray-700"} p-2 rounded-lg max-w-xs`}>
                         <div className="flex flex-row gap-2">
-                            <img className = "h-10 w-10"src="https://avatar.iran.liara.run/public" alt=""/>
-
+                        <img 
+                        className="h-10 w-10" 
+                        src={`https://avatar.iran.liara.run/public?username=${messages.sender}`} 
+                        alt={messages.sender}
+                        />
                         <div className=" flex flex-col gap-1">
                         <p className="text-sm font-bold">{messages.sender}</p>
                         <p>{messages.content}</p>
+                        <p>{timeAgo(messages.timeStamp)}</p>
                         </div>
                     </div>
                     </div>
@@ -130,9 +184,24 @@ const[stompClient,setStompClient] = useState(null);
 
       <div className="fixed bottom-2 w-full h-16">
         <div className="h-full flex items-center justify-between rounded-lg w-2/3 mx-auto dark:bg-gray-700">
-        <input type="text" placeholder="Type Here.......... " className="dark:bg-gray-700 px-3 py-2 rounded-lg  w-full h-full"/>
+        <input 
+        value={input}
+        onKeyDown = {(e) => {
+            if (e.key === 'Enter') {
+            sendMessage();
+        }}}
+        onChange={
+            (e)=>(
+                setInput(e.target.value)
+            )
+        }   
+
+        type="text" placeholder="Type Here.......... " className="dark:bg-gray-700 px-3 py-2 rounded-lg  w-full h-full"/>
         <div className="flex gap-1">
-        <button className="dark:bg-green-500 h-10 w-20 rounded-lg dark:hover:bg-blue-900 flex justify-center items-center">
+        <button onClick={
+            sendMessage
+        }
+        className="dark:bg-green-500 h-10 w-20 rounded-lg dark:hover:bg-blue-900 flex justify-center items-center">
         <MdSend size={20}/>
         </button>
         <button className="dark:bg-purple-500 h-10 w-20 rounded-lg dark:hover:bg-blue-900 flex justify-center items-center">

@@ -109,6 +109,7 @@ async function joinroom(){
                 Room Id /New Room Id
             </label>
             <input type="text" 
+    
             name="RoomName"
             value={detail.RoomName}
             onChange={handlingform}
