@@ -1,4 +1,3 @@
-cat > README.md << 'EOF'
 # 💬 Real-Time Chat Application
 
 A full-stack real-time chat platform built with **React**, **Spring Boot**, and **MongoDB Atlas**, deployed on **Render**. Users can create and join chat rooms, send real-time messages, and experience seamless communication through a clean and interactive UI.
@@ -23,7 +22,7 @@ A full-stack real-time chat platform built with **React**, **Spring Boot**, and 
 - CORS configured for secure cross-origin requests
 
 ### 🔹 Deployment
-- Backend: Dockerized and deployed on **Render**
+- Backend: deployed on **Render**
 - Frontend: Vite build deployed on **Render**
 - Environment Variables managed securely
 
@@ -54,9 +53,6 @@ A full-stack real-time chat platform built with **React**, **Spring Boot**, and 
 ### 1️⃣ Backend Setup
 
 \`\`\`bash
-# Navigate to backend
-cd chat-apk-backend
-
 # Set environment variable
 Create a .env file with:
 MONGO_URI=your_mongo_db_connection_string
