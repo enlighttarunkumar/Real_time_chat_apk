@@ -37,3 +37,4 @@ build/
 *.log
 *.class
 .env
+.env
