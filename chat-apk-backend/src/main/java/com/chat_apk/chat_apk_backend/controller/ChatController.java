@@ -17,10 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.time.LocalDateTime;
 
 @Controller
-@CrossOrigin(origins = {
-        "https://real-time-chat-apk-4.onrender.com",
-        "http://localhost:5173"
-})public class ChatController {
+@CrossOrigin(AppConstant.URL)
+public class ChatController {
 
     @Autowired
     private RoomRepo roomRepository;
