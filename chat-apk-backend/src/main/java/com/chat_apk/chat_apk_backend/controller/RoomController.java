@@ -1,5 +1,6 @@
 package com.chat_apk.chat_apk_backend.controller;
 
+import com.chat_apk.chat_apk_backend.config.AppConstant;
 import com.chat_apk.chat_apk_backend.entity.Message;
 import com.chat_apk.chat_apk_backend.entity.Room;
 import com.chat_apk.chat_apk_backend.repository.RoomRepo;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/rooms")
-@CrossOrigin("http://localhost:5173")
+@CrossOrigin(AppConstant.URL)
 public class RoomController {
 
     @Autowired
