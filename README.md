@@ -2,7 +2,6 @@
 
 A full-stack real-time chat platform built with **React**, **Spring Boot**, and **MongoDB Atlas**, deployed on **Render**. Users can create and join chat rooms, send real-time messages, and experience seamless communication through a clean and interactive UI.
 
-> 🚀 Live Demo: [https://real-time-chat-apk-4.onrender.com](https://real-time-chat-apk-4.onrender.com)
 
 ---
 
