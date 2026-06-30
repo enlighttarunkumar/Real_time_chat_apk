@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/doubtroom-hero.svg" alt="DoubtRoom — focused academic help in real time" width="100%" />
+  <img src="docs/doubtroom-preview.png" alt="DoubtRoom student landing page and professor search" width="100%" />
 </p>
 
 <p align="center">
