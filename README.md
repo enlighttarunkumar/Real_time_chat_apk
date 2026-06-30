@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/enlighttarunkumar/Doubtfun/stargazers"><img src="https://img.shields.io/github/stars/enlighttarunkumar/Doubtfun?style=for-the-badge&logo=github&color=ef703d&labelColor=17312a" alt="GitHub stars" /></a>
+  <a href="https://github.com/enlighttarunkumar/Real_time_chat_apk/stargazers"><img src="https://img.shields.io/github/stars/enlighttarunkumar/Real_time_chat_apk?style=for-the-badge&logo=github&color=ef703d&labelColor=17312a" alt="GitHub stars" /></a>
   <img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=17312a" alt="React 19" />
   <img src="https://img.shields.io/badge/Spring_Boot-3.5-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" alt="Spring Boot 3.5" />
   <img src="https://img.shields.io/badge/Java-17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java 17" />
@@ -78,7 +78,7 @@ flowchart TB
 ## Project structure
 
 ```text
-Doubtfun/
+Real_time_chat_apk/
 ├── chat-frontend/       # React + Vite client
 ├── chat-apk-backend/    # Spring Boot API and WebSocket server
 ├── docs/                # Repository visuals
