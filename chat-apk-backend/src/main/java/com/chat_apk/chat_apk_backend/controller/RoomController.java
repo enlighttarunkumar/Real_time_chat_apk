@@ -1,6 +1,5 @@
 package com.chat_apk.chat_apk_backend.controller;
 
-import com.chat_apk.chat_apk_backend.config.AppConstant;
 import com.chat_apk.chat_apk_backend.entity.Message;
 import com.chat_apk.chat_apk_backend.entity.Room;
 import com.chat_apk.chat_apk_backend.entity.RoomStatus;
@@ -19,7 +18,6 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1/rooms")
-@CrossOrigin(origins = {AppConstant.URL, AppConstant.LOCAL_URL, AppConstant.LOCAL_IP_URL})
 public class RoomController {
 
     private final RoomRepo roomRepo;

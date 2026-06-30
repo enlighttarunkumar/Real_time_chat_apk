@@ -1,6 +1,5 @@
 package com.chat_apk.chat_apk_backend.controller;
 
-import com.chat_apk.chat_apk_backend.config.AppConstant;
 import com.chat_apk.chat_apk_backend.entity.Room;
 import com.chat_apk.chat_apk_backend.entity.Message;
 import com.chat_apk.chat_apk_backend.entity.RoomStatus;
@@ -12,14 +11,12 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Controller
-@CrossOrigin(origins = {AppConstant.URL, AppConstant.LOCAL_URL, AppConstant.LOCAL_IP_URL})
 public class ChatController {
 
     private final RoomRepo roomRepository;

@@ -1,6 +1,5 @@
 package com.chat_apk.chat_apk_backend.controller;
 
-import com.chat_apk.chat_apk_backend.config.AppConstant;
 import com.chat_apk.chat_apk_backend.entity.Professor;
 import com.chat_apk.chat_apk_backend.playload.RatingRequest;
 import com.chat_apk.chat_apk_backend.service.ProfessorService;
@@ -12,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/professors")
-@CrossOrigin(origins = {AppConstant.URL, AppConstant.LOCAL_URL, AppConstant.LOCAL_IP_URL})
 public class ProfessorController {
     private final ProfessorService professorService;
 
