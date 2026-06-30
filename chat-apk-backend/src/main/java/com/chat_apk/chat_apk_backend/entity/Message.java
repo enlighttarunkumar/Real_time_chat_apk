@@ -12,10 +12,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Message {
+    private String messageId;
     private String sender;
     private String content;
     private LocalDateTime timeStamp;
+    private boolean pinned;
+
     Message(String sender, String content) {
+        this.messageId = java.util.UUID.randomUUID().toString();
         this.sender = sender;
         this.content = content;
         this.timeStamp = LocalDateTime.now();

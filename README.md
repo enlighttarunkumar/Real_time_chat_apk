@@ -1,128 +1,165 @@
-# 💬 Real-Time Chat Application
+<p align="center">
+  <img src="docs/doubtroom-hero.svg" alt="DoubtRoom — focused academic help in real time" width="100%" />
+</p>
 
-A full-stack real-time chat platform built with **React**, **Spring Boot**, and **MongoDB Atlas**, deployed on **Render**. Users can create and join chat rooms, send real-time messages, and experience seamless communication through a clean and interactive UI.
+<p align="center">
+  <strong>Turn questions into clear answers, together.</strong><br />
+  A focused real-time learning space where students discover professors, join live doubt rooms, and leave with a pinned final answer.
+</p>
 
-
----
-
-## 🛠️ Tech Stack
-
-### 🔹 Frontend
-- **Vite + React**
-- Axios for HTTP requests
-- Socket.IO for real-time messaging
-- Tailwind CSS (if used) or plain CSS
-
-### 🔹 Backend
-- **Spring Boot** (Java)
-- WebSocket (for real-time communication)
-- MongoDB Atlas (cloud NoSQL database)
-- REST APIs for room and message handling
-- CORS configured for secure cross-origin requests
-
-### 🔹 Deployment
-- Backend: deployed on **Render**
-- Frontend: Vite build deployed on **Render**
-- Environment Variables managed securely
+<p align="center">
+  <a href="https://github.com/enlighttarunkumar/Real_time_chat_apk/stargazers"><img src="https://img.shields.io/github/stars/enlighttarunkumar/Real_time_chat_apk?style=for-the-badge&logo=github&color=ef703d&labelColor=17312a" alt="GitHub stars" /></a>
+  <img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=17312a" alt="React 19" />
+  <img src="https://img.shields.io/badge/Spring_Boot-3.5-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" alt="Spring Boot 3.5" />
+  <img src="https://img.shields.io/badge/Java-17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java 17" />
+  <img src="https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB Atlas" />
+</p>
 
 ---
 
-## ✅ Features
+## What is DoubtRoom?
 
-- 🔒 Create or join chat rooms with unique IDs
-- ⚡ Real-time message updates using WebSocket
-- 📜 Message history with pagination
-- 🌐 Deployed and accessible from anywhere
-- 🎯 Optimized for both development and production
+DoubtRoom is a full-stack academic chat application designed around one simple idea: each room should solve one doubt well. Professors host protected, subject-specific rooms, students find the right professor through fast prefix search, and both sides collaborate over a live WebSocket connection.
 
----
+The conversation ends with a useful outcome—not just a closed chat. A professor can pin the clearest response as the final answer, resolve the room, and receive a student rating.
 
-## 🧩 Folder Structure
+## Highlights
 
-\`\`\`
-/Real_time_chat_apk
-  ├── chat-apk-backend       # Spring Boot backend
-  └── chat-apk-frontend      # Vite + React frontend
-\`\`\`
+| Discover | Discuss | Resolve |
+| :--- | :--- | :--- |
+| Search professors by name with trie-backed prefix matching | Exchange messages instantly with STOMP over SockJS | Pin the best answer and mark the doubt as resolved |
+| See topic, subject, department, availability, and ratings | Keep room history in MongoDB | Let students rate the completed session |
+| Join as a student or securely rejoin as a professor | Protect professor actions with rotating access tokens | Preserve the final answer at the top of the conversation |
 
----
+## How it works
 
-## ⚙️ Running Locally
+```mermaid
+flowchart LR
+    A["Professor creates a room with a secret PIN"] --> B["Student discovers the professor"]
+    B --> C["Both join the live discussion"]
+    C --> D["Professor pins the clearest answer"]
+    D --> E["Room is marked resolved"]
+    E --> F["Student rates the session"]
+```
 
-### 1️⃣ Backend Setup
+## Architecture
 
-\`\`\`bash
-# Set environment variable
-Create a .env file with:
-MONGO_URI=your_mongo_db_connection_string
+```mermaid
+flowchart TB
+    UI["React 19 + Vite"]
+    REST["Spring Boot REST API"]
+    WS["STOMP / SockJS WebSocket"]
+    DB[("MongoDB")]
+    TRIE["In-memory professor trie"]
+    AUTH["Hashed PIN + access token"]
 
-# Run the backend
+    UI -->|rooms, history, ratings| REST
+    UI <-->|live messages| WS
+    REST --> DB
+    WS --> DB
+    REST --> TRIE
+    REST --> AUTH
+    WS --> AUTH
+```
+
+## Tech stack
+
+| Layer | Technology |
+| :--- | :--- |
+| Frontend | React 19, Vite 7, React Router, Axios, React Hot Toast |
+| Styling | Responsive custom CSS with a warm editorial design system |
+| Realtime | STOMP over SockJS and Spring WebSocket |
+| Backend | Java 17, Spring Boot 3.5, Spring Data MongoDB |
+| Data | MongoDB / MongoDB Atlas |
+| Search | Custom trie with availability- and rating-aware results |
+| Security | PBKDF2-HMAC-SHA256 PIN hashes and hashed professor access tokens |
+| Tooling | Maven Wrapper, npm, ESLint, Docker |
+
+## Project structure
+
+```text
+Real_time_chat_apk/
+├── chat-frontend/       # React + Vite client
+├── chat-apk-backend/    # Spring Boot API and WebSocket server
+├── docs/                # Repository visuals
+└── README.md
+```
+
+## Run locally
+
+### Prerequisites
+
+- Java 17+
+- Node.js 20+
+- MongoDB connection string
+
+### 1. Start the backend
+
+```bash
+cd chat-apk-backend
+export MONGO_URI="mongodb://localhost:27017/doubtroom"
 ./mvnw spring-boot:run
-\`\`\`
+```
 
-### 2️⃣ Frontend Setup
+The API starts on `http://localhost:8080` by default.
 
-\`\`\`bash
-# Navigate to frontend
-cd chat-apk-frontend
+### 2. Start the frontend
 
-# Install dependencies
+Open another terminal:
+
+```bash
+cd chat-frontend
 npm install
-
-# Start the development server
+printf 'VITE_BACKEND_URL=http://localhost:8080\n' > .env.local
 npm run dev
-\`\`\`
+```
 
-> 📝 Make sure \`baseURL\` in \`AxiosHelper.js\` points to your backend:
-> \`\`\`js
-> export const baseURL = "http://localhost:8080";
-> \`\`\`
+Then open `http://localhost:5173`.
 
----
+> [!IMPORTANT]
+> Keep real database credentials out of Git. Use `MONGO_URI` for the backend and `VITE_BACKEND_URL` for the frontend.
 
-## 🌐 Environment Variables
+## Core API
 
-Make sure to hide sensitive credentials:
+| Method | Route | Purpose |
+| :---: | :--- | :--- |
+| `POST` | `/api/v1/rooms` | Create a doubt room |
+| `GET` | `/api/v1/rooms/{roomId}` | Join or refresh a room |
+| `POST` | `/api/v1/rooms/{roomId}/professor/rejoin` | Rejoin with the professor PIN |
+| `GET` | `/api/v1/rooms/{roomId}/messages` | Load paginated history |
+| `PATCH` | `/api/v1/rooms/{roomId}/messages/{messageId}/pin` | Pin the final answer |
+| `PATCH` | `/api/v1/rooms/{roomId}/resolve` | Resolve a completed doubt |
+| `PATCH` | `/api/v1/rooms/{roomId}/professor/status` | Update professor availability |
+| `GET` | `/api/v1/professors/search?prefix=` | Find professors by prefix |
+| `POST` | `/api/v1/professors/{id}/rating` | Rate a professor |
 
-### .env (Backend)
-\`\`\`env
-MONGO_URI=your_mongo_db_connection_string
-\`\`\`
+Live messages are published to `/app/sendMessage/{roomId}` and received from `/topic/room/{roomId}`.
 
----
+Professor-only operations require the short-lived room access token returned after room creation or a successful PIN-based rejoin. The PIN and token are stored only as cryptographic hashes on the backend.
 
-## 🚀 Deployment
+## Build for production
 
-Both frontend and backend are deployed on **Render**:
+```bash
+# Frontend
+cd chat-frontend
+npm ci
+npm run build
 
-- **Backend (Docker)**: Deploy from GitHub → expose port \`8080\` → configure environment variables
-- **Frontend (Static Site)**: Set \`baseURL\` to backend URL → build with \`vite\` → deploy \`dist\` folder
+# Backend
+cd ../chat-apk-backend
+./mvnw clean package
+```
 
----
+The backend also includes a `Dockerfile` for container-based deployment.
 
-## 📸 Screenshots
+## Contributing
 
-![Chat Room](https://via.placeholder.com/800x400?text=Chat+UI+Screenshot)
-*Real-time chat interface (replace with actual screenshot)*
+Contributions are welcome. Fork the repository, create a focused branch, and open a pull request with a clear description of the change. For larger ideas, open an issue first so the approach can be discussed.
 
----
+## Author
 
-## 🤝 Contributing
+Built by [Tarun Kumar Basera](https://github.com/enlighttarunkumar).
 
-Pull requests are welcome. For major changes, please open an issue first.
-
----
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-## 👤 Author
-
-**Tarun Kumar Basera**  
-[GitHub](https://github.com/enlighttarunkumar)
-
----
-EOF
+<p align="center">
+  If DoubtRoom helped or inspired you, consider giving the repository a ⭐
+</p>

@@ -5,18 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
-@Setter
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
-public class MessageRequest {
-
-    private String content;
-    private String sender;
+@AllArgsConstructor
+public class CreateRoomRequest {
     private String roomId;
-    private String professorToken;
-
-
+    private String professorId;
+    private String professorName;
+    private String subject;
+    private String topic;
+    private String professorPin;
 }

@@ -1,0 +1,30 @@
+# Environment and secret files
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Local package-manager configuration
+.npmrc
+**/.npmrc
+**/.mvn/settings.xml
+**/.mvn/maven.config
+
+# Dependencies and generated output
+**/node_modules/
+**/.npm-cache/
+**/dist/
+**/target/
+**/build/
+
+# IDE and operating-system files
+.DS_Store
+**/.DS_Store
+.idea/
+**/.idea/
+.vscode/
+**/.vscode/
+*.iml
+*.log
