@@ -15,6 +15,12 @@
   <img src="https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB Atlas" />
 </p>
 
+<p align="center">
+  <a href="https://real-time-chat-apk-4.onrender.com">
+    <img src="https://img.shields.io/badge/Live_Demo-Open_DoubtFun-1e765c?style=for-the-badge" alt="Open the DoubtFun live demo" />
+  </a>
+</p>
+
 ---
 
 ## What is DoubtRoom?
