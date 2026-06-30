@@ -1,0 +1,4 @@
+# Keep GitHub's repository language summary focused on the Java backend.
+# The React frontend remains fully tracked and visible; it is only excluded
+# from Linguist's language percentage calculation.
+chat-frontend/** -linguist-detectable
